@@ -41,12 +41,13 @@ Route::middleware('guest')->group(function () {
 Route::prefix('back_admin')->group(function () {
 
     Route::get('login', [AdminAuthenticatedSessionController::class, 'create'])
-                ->name('login');
+                ->name('admin.login');
 
-    Route::post('login', [AdminAuthenticatedSessionController::class, 'store']);
+    Route::post('login', [AdminAuthenticatedSessionController::class, 'store'])
+                ->name('admin.login.store');
 
     Route::post('logout', [AdminAuthenticatedSessionController::class, 'destroy'])
-                ->name('logout');
+                ->name('admin.logout');
 });
 
 Route::middleware('auth')->group(function () {

@@ -25,6 +25,8 @@ Route::get('/', function () {
 Route::group(['middleware' => ['admin'], 'prefix' => 'back_admin', 'as' => 'admin.'], function() {
 
     Route::get('/', [AdminController::class, 'index'])->name('home');
+    Route::get('/account_settings/profile', [AdminController::class, 'index'])->name('profile');
+    Route::get('/account_settings/change_password', [AdminController::class, 'index'])->name('change_password');
 
     Route::resource('permission', PermissionController::class);
     // Route::get('permissions/{permissionId}/delete', [PermissionController::class, 'destroy']);
