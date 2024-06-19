@@ -20,6 +20,8 @@ class UserController extends BaseController
     public function index()
     {
         $users = User::get();
+        $head = $this->getHead();
+        $this->response['head'] = array_merge(['Username', 'Name', 'Email', 'Roles'], $head);
         $this->response['users'] = $users;
         return view('admin.role-permission.user.view', $this->response);
     }

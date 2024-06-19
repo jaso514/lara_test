@@ -1,12 +1,18 @@
-
+<div class="btn-group">
 @can("$entity update")
-<a href="{{ route("admin.$entity.edit", [$objectId]) }}" class="btn btn-success">Edit</a>
+    <a href="{{ route("admin.$entity.edit", [$objectId]) }}" class="btn btn-xs btn-success mx-1 shadow"
+            alt="Edit" title="Edit">
+        <i class="fa fa-lg fa-fw fa-pen"></i>
+    </a>
 @endcan
 
 @can("$entity delete")
-<form method="POST" action="{{ route("admin.$entity.destroy", [$objectId]) }}">
-    @method('DELETE')
-    @csrf
-    <button type="submit">{{ __('Delete') }}</button>
-</form>
+    <button type="button" class="btn btn-xs btn-warning mx-1 shadow confirm-delete-btn"
+            data-entity="{{ $entity }}"
+            data-object-id="{{ $objectId }}"
+            data-toggle="modal" data-target="#deleteConfirmationModal"
+            alt="Delete" title="Delete">
+        <i class="fa fa-lg fa-fw fa-trash"></i>
+    </button>
 @endcan
+</div>

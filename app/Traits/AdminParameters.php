@@ -9,4 +9,10 @@ trait AdminParameters
     public function setEntity($entity) {
         $this->entity = $entity;
     }
+
+    public function getHead() {
+        return [
+            ['label' => 'Actions', 'no-export' => true, 'width' => 5]
+        ];
+    }
 }

@@ -12,11 +12,9 @@
                 @endif
 
                 <div class="card">
-                    <div class="card-header">
-                        <h4>Create User
-                            <a href="{{ route('admin.user.index') }}" class="btn btn-danger float-end">Back</a>
-                        </h4>
-                    </div>
+
+                    <x-admin.index-header :entity="$entity" :action="'create'" :buttons="['index']"/>
+
                     <div class="card-body">
                         <form action="{{ route('admin.user.store') }}" method="POST">
                             @csrf
