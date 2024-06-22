@@ -29,15 +29,10 @@ Route::group(['middleware' => ['admin'], 'prefix' => 'back_admin', 'as' => 'admi
     Route::get('/account_settings/change_password', [AdminController::class, 'index'])->name('change_password');
 
     Route::resource('permission', PermissionController::class);
-    // Route::get('permissions/{permissionId}/delete', [PermissionController::class, 'destroy']);
 
     Route::resource('role', RoleController::class);
-    // Route::get('roles/{roleId}/delete', [RoleController::class, 'destroy']);
-    Route::get('role/{roleId}/give-permissions', [RoleController::class, 'addPermissionToRole']);
-    Route::put('role/{roleId}/give-permissions', [RoleController::class, 'givePermissionToRole']);
 
     Route::resource('user', UserController::class);
-    // Route::get('users/{userId}/delete', [UserController::class, 'destroy']);
 
 });
 

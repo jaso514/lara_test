@@ -7,7 +7,7 @@
         Add {{ Str::title($entity) }}</a>       
         @endif
         @if(in_array('index', $buttons))
-        <a href="{{ route('admin.user.index') }}" class="btn btn-danger float-right">Back</a>
+        <a href="{{ route("admin.$entity.index") }}" class="btn btn-danger float-right">Back</a>
         @endif
     </div>
     @endcan
