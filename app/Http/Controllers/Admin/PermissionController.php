@@ -3,28 +3,30 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\BaseController;
 use Spatie\Permission\Models\Permission;
 
-class PermissionController extends Controller
+class PermissionController extends BaseController
 {
     public function __construct()
     {
-        $this->middleware('permission:view permission', ['only' => ['index']]);
-        $this->middleware('permission:create permission', ['only' => ['create','store']]);
-        $this->middleware('permission:update permission', ['only' => ['update','edit']]);
-        $this->middleware('permission:delete permission', ['only' => ['destroy']]);
+        $this->setEntity('permission');
+        parent::__construct();
     }
 
     public function index()
     {
         $permissions = Permission::get();
-        return view('role-permission.permission.index', ['permissions' => $permissions]);
+        $head = $this->getHead();
+        $this->response['head'] = array_merge(['name', 'guard_name', 'created_at'], $head);
+        $this->response['permissions'] = $permissions;
+
+        return view('admin.role-permission.permission.view', $this->response);
     }
 
     public function create()
     {
-        return view('role-permission.permission.create');
+        return view('admin.role-permission.permission.create', $this->response);
     }
 
     public function store(Request $request)
@@ -34,19 +36,24 @@ class PermissionController extends Controller
                 'required',
                 'string',
                 'unique:permissions,name'
-            ]
+            ],
+            'guard_name' => [
+                'required',
+                'string'            ]
         ]);
 
         Permission::create([
-            'name' => $request->name
+            'name' => $request->name,
+            'guard_name' => $request->guard_name,
         ]);
 
-        return redirect('permissions')->with('status','Permission Created Successfully');
+        return redirect(route('admin.permission.index'))->with('status','Permission Created Successfully');
     }
 
     public function edit(Permission $permission)
     {
-        return view('role-permission.permission.edit', ['permission' => $permission]);
+        $this->response['permission'] = $permission;
+        return view('admin.role-permission.permission.update', $this->response);
     }
 
     public function update(Request $request, Permission $permission)
@@ -56,20 +63,25 @@ class PermissionController extends Controller
                 'required',
                 'string',
                 'unique:permissions,name,'.$permission->id
+            ],
+            'guard_name' => [
+                'required',
+                'string'
             ]
         ]);
 
         $permission->update([
-            'name' => $request->name
+            'name' => $request->name,
+            'guard_name' => $request->guard_name,
         ]);
 
-        return redirect('permissions')->with('status','Permission Updated Successfully');
+        return redirect(route('admin.permission.edit', [$permission->id]))->with('status','Permission Updated Successfully');
     }
 
     public function destroy($permissionId)
     {
         $permission = Permission::find($permissionId);
         $permission->delete();
-        return redirect('permissions')->with('status','Permission Deleted Successfully');
+        return redirect(route('admin.permission.index'))->with('status','Permission Deleted Successfully');
     }
 }

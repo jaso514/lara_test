@@ -1,5 +1,4 @@
 <x-admin.create-base :entity="$entity" :action="'update'">
-
     <form action="{{ route('admin.role.store') }}" method="POST">
         @csrf
 
