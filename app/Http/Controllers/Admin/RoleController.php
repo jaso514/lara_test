@@ -37,7 +37,9 @@ class RoleController extends BaseController
             'name' => [
                 'required',
                 'string',
-                'unique:roles,name'
+                'unique:roles,name',
+                'min' => 4,
+                'max' => 16
             ]
         ]);
 
@@ -71,7 +73,9 @@ class RoleController extends BaseController
             'name' => [
                 'required',
                 'string',
-                'unique:roles,name,'.$role->id
+                'unique:roles,name,'.$role->id,
+                'min' => 4,
+                'max' => 16
             ],
             'guard_name' => [
                 'required',

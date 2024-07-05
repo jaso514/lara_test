@@ -12,6 +12,8 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    
+    public $timestamps = true; // This is the default, but ensure it's set
 
     /**
      * The attributes that are mass assignable.

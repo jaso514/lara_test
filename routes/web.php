@@ -6,6 +6,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\CustomerUserController;
+use App\Http\Controllers\Admin\PortfolioSitesController;
+use App\Http\Controllers\Admin\ResumeController;
+use App\Http\Controllers\Admin\ProjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +37,12 @@ Route::group(['middleware' => ['admin'], 'prefix' => 'back_admin', 'as' => 'admi
     Route::resource('role', RoleController::class);
 
     Route::resource('user', UserController::class);
+
+    Route::resource('customer-user', CustomerUserController::class);
+    Route::resource('portfolio-sites', PortfolioSitesController::class);
+    Route::resource('resume', ResumeController::class);
+    Route::resource('project', ProjectController::class);
+
 
 });
 

@@ -36,12 +36,12 @@ class UserController extends BaseController
     public function store(Request $request)
     {
         $request->validate([
-            'username' => 'required|string|min:4|max:16|unique:users,username|regex:/^[a-zA-Z0-9_]+$/',
-            'name' => 'required|string|max:40',
-            'email' => 'required|email|max:255|unique:users,email',
-            'password' => 'required|string|min:8|max:32|regex:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*+?&])[A-Za-z\d@$!%*+?&]{8,}$/',
-            'roles' => 'required'
-        ]);
+                'username' => 'required|string|min:4|max:16|unique:users,username|regex:/^[a-zA-Z0-9_]+$/',
+                'name' => 'required|string|min:4|max:40',
+                'email' => 'required|email:rfc|max:255|unique:users,email',
+                'password' => 'required|string|min:8|max:32|regex:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*+?&])[A-Za-z\d@$!%*+?&]{8,}$/',
+                'role' => 'required'
+            ]);
 
         $user = User::create([
                 'username' => $request->username,
@@ -50,9 +50,9 @@ class UserController extends BaseController
                 'password' => Hash::make($request->password),
             ]);
 
-        $user->syncRoles($request->roles);
+        $user->syncRoles($request->role);
 
-        return redirect(route('admin.user.store'))->with('status','User created successfully with roles');
+        return redirect(route('admin.user.edit', [$user->id]))->with('status','User created successfully with roles');
     }
 
     public function edit(User $user)
@@ -71,7 +71,7 @@ class UserController extends BaseController
         $rules = [
             'username' => 'required|string|min:4|max:16|unique:users,username,'.$user->id.'|regex:/^[a-zA-Z0-9_]+$/',
             'name' => 'required|string|max:40',
-            'email' => 'required|email|max:255|unique:users,email,'.$user->id,
+            'email' => 'required|email:rfc|max:255|unique:users,email,'.$user->id,
             'roles' => 'required'
         ];
         
