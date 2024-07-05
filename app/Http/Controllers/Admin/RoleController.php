@@ -34,13 +34,8 @@ class RoleController extends BaseController
     public function store(Request $request)
     {
         $request->validate([
-            'name' => [
-                'required',
-                'string',
-                'unique:roles,name',
-                'min' => 4,
-                'max' => 16
-            ]
+            'name' => 'required|string|unique:roles,name|min:4|max:16',
+            'guard_name' => 'required|string'
         ]);
 
         Role::create([
@@ -70,17 +65,8 @@ class RoleController extends BaseController
     public function update(Request $request, Role $role)
     {
         $request->validate([
-            'name' => [
-                'required',
-                'string',
-                'unique:roles,name,'.$role->id,
-                'min' => 4,
-                'max' => 16
-            ],
-            'guard_name' => [
-                'required',
-                'string'
-            ]
+            'name' => 'required|string|unique:roles,name,' . $role->id . '|min:4|max:16',
+            'guard_name' => 'required|string'
         ]);
 
         $role->update([

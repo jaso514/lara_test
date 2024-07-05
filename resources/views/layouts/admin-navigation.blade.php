@@ -20,7 +20,7 @@
                 @can('user view')
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('admin.user.index')" :active="request()->routeIs('admin.user.create')">
-                        {{ __('Users') }}XXX
+                        {{ __('Users') }}
                     </x-nav-link>
                 </div>
                 @endcan
