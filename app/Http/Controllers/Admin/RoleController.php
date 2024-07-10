@@ -28,6 +28,7 @@ class RoleController extends BaseController
 
     public function create()
     {
+        $this->response['guards'] = config('auth.guards') ? array_keys(config('auth.guards')) : ['web'];
         return view('admin.role-permission.role.create', $this->response);
     }
 
@@ -58,6 +59,7 @@ class RoleController extends BaseController
 
         $this->response['permissions'] = $permissions;
         $this->response['rolePermissions'] = $rolePermissions;
+        $this->response['guards'] = config('auth.guards') ? array_keys(config('auth.guards')) : ['web'];
 
         return view('admin.role-permission.role.update', $this->response);
     }
