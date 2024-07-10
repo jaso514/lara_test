@@ -87,7 +87,7 @@ class RoleController extends BaseController
     public function destroy($roleId)
     {
         $role = Role::find($roleId);
-        $role->delete();
+        $role->deleteOrFail();
         
         return redirect(route('admin.role.index'))->with('status','Role Deleted Successfully');
     }

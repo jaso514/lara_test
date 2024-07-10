@@ -32,11 +32,9 @@ Route::group(['middleware' => ['admin'], 'prefix' => 'back_admin', 'as' => 'admi
     Route::get('/account_settings/profile', [AdminController::class, 'index'])->name('profile');
     Route::get('/account_settings/change_password', [AdminController::class, 'index'])->name('change_password');
 
-    Route::resource('permission', PermissionController::class);
-
-    Route::resource('role', RoleController::class);
-
     Route::resource('user', UserController::class);
+    Route::resource('permission', PermissionController::class);
+    Route::resource('role', RoleController::class);
 
     Route::resource('customer-user', CustomerUserController::class);
     Route::resource('portfolio-sites', PortfolioSitesController::class);
