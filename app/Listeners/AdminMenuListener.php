@@ -24,11 +24,6 @@ class AdminMenuListener
     public function handle(BuildingMenu $event): void
     {
         $event->menu->add([
-            'header' => 'authorization_config',
-            'can' => ['user view', 'role view', 'permission view']
-        ]);
-
-        $event->menu->add([
             'key' => 'authorization',
             'text' => 'Authorization',
             'icon' => '',

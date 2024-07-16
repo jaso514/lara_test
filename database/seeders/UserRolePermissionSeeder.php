@@ -27,6 +27,7 @@ class UserRolePermissionSeeder extends Seeder
             'permission',
             'user'
         ];
+
         // Create Permissions
         foreach ($entities as $entity) {
             foreach ($permissions as $permission) {
@@ -41,10 +42,10 @@ class UserRolePermissionSeeder extends Seeder
 
         // Lets give all permission to super-admin, admin role.
         $allPermissionNames = Permission::pluck('name')->toArray();
+        $viewPermissionNames = ['role view', 'user view', 'permission view'];
 
         $superAdminRole->givePermissionTo($allPermissionNames);
-        $adminRole->givePermissionTo($allPermissionNames);
-
+        $adminRole->givePermissionTo($viewPermissionNames);
 
         // Let's Create User and assign Role to it.
 
