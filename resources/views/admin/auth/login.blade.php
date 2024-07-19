@@ -43,7 +43,7 @@
 
         {{-- Password field --}}
         <div class="input-group mb-4">
-            <input type="password" name="password"
+            <input type="password" name="password" class="form-control"
                    placeholder="{{ __('adminlte::adminlte.password') }}" required>
 
             <div class="input-group-append">
