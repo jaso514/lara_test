@@ -27,7 +27,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            $this->username() => ['required', 'string'],
+            $this->username() => ['required', 'string', 'min:4', 'max:16', 'regex:/^[a-zA-Z0-9_]+$/'],
             'password' => ['required', 'string'],
         ];
     }
