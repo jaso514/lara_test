@@ -15,12 +15,23 @@
 @section('auth_header', __('adminlte::adminlte.login_message'))
 
 @section('auth_body')
+
+
     <form action="{{ $login_url }}" method="post">
         @csrf
+        
+        @error('username')
+        <div class="input-group mb-4">
+            <input type="hidden" class="is-invalid"/>
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        </div>
+        @enderror
 
         {{-- Username field --}}
         <div class="input-group mb-4">
-            <input type="username" name="username" class="form-control @error('username') is-invalid @enderror"
+            <input type="username" name="username" class="form-control"
                    value="{{ old('username') }}" placeholder="{{ __('adminlte::adminlte.username') }}" autofocus required>
 
             <div class="input-group-append">
@@ -28,17 +39,11 @@
                     <span class="fas fa-user {{ config('adminlte.classes_auth_icon', '') }}"></span>
                 </div>
             </div>
-
-            @error('username')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
         </div>
 
         {{-- Password field --}}
         <div class="input-group mb-4">
-            <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
+            <input type="password" name="password"
                    placeholder="{{ __('adminlte::adminlte.password') }}" required>
 
             <div class="input-group-append">
@@ -47,11 +52,6 @@
                 </div>
             </div>
 
-            @error('password')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
         </div>
 
         {{-- Login field --}}
