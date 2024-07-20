@@ -35,7 +35,7 @@ class PermissionController extends BaseController
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|unique:permissions,name|min:4|max:14',
+            'name' => 'required|regex:/^[a-zA-Z0-9_\ ]+$/|unique:permissions,name|min:4|max:16',
             'guard_name' => 'required|string'
         ]);
 
@@ -57,7 +57,7 @@ class PermissionController extends BaseController
     public function update(Request $request, Permission $permission)
     {
         $request->validate([
-            'name' => 'required|string|unique:permissions,name,' . $permission->id . '|min:4|max:16',
+            'name' => 'required|regex:/^[a-zA-Z0-9_\ ]+$/|unique:permissions,name,' . $permission->id . '|min:4|max:16',
             'guard_name' => 'required|string'
         ]);
 
