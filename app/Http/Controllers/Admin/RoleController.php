@@ -39,12 +39,12 @@ class RoleController extends BaseController
             'guard_name' => 'required|string'
         ]);
 
-        Role::create([
+        $role = Role::create([
             'name' => $request->name,
             'guard_name' => $request->guard_name,
         ]);
 
-        return redirect(route('admin.role.index'))->with('status','Role Created Successfully');
+        return redirect(route('admin.role.edit', [$role->id]))->with('status','Role Created Successfully');
     }
 
     public function edit(Role $role)
