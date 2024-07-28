@@ -20,7 +20,7 @@ class PermissionController extends BaseController
     {
         $permissions = Permission::get();
         $head = $this->getHead();
-        $this->response['head'] = array_merge(['name', 'guard_name', 'created_at'], $head);
+        $this->response['head'] = array_merge([trans('admin.name'), trans('admin.guard_name'), trans('admin.created_at')], $head);
         $this->response['permissions'] = $permissions;
 
         return view('admin.role-permission.permission.view', $this->response);

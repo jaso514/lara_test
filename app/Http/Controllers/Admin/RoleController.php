@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\BaseController;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
+use App\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\DB;
 
@@ -20,7 +20,7 @@ class RoleController extends BaseController
     {
         $roles = Role::get();
         $head = $this->getHead();
-        $this->response['head'] = array_merge(['name', 'guard_name', 'created_at'], $head);
+        $this->response['head'] = array_merge([trans('admin.name'), trans('admin.guard_name'), trans('admin.created_at')], $head);
         $this->response['roles'] = $roles;
 
         return view('admin.role-permission.role.view', $this->response);
@@ -28,14 +28,14 @@ class RoleController extends BaseController
 
     public function create()
     {
-        $this->response['guards'] = config('auth.guards') ? array_keys(config('auth.guards')) : ['web'];
+        $this->response['guards'] = Role::getDefaultGuards();
         return view('admin.role-permission.role.create', $this->response);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|unique:roles,name|min:2|max:16',
+            'name' => 'required|unique:roles,name|min:2|max:16|regex:/^[a-zA-Z0-9_-]+$/',
             'guard_name' => 'required|string'
         ]);
 
@@ -43,6 +43,8 @@ class RoleController extends BaseController
             'name' => $request->name,
             'guard_name' => $request->guard_name,
         ]);
+
+        $this->clearCache();
 
         return redirect(route('admin.role.edit', [$role->id]))->with('status','Role Created Successfully');
     }
@@ -67,20 +69,35 @@ class RoleController extends BaseController
     public function update(Request $request, Role $role)
     {
         $request->validate([
-            'name' => 'required|string|unique:roles,name,' . $role->id . '|min:4|max:16',
+            'name' => 'required|string|unique:roles,name,' . $role->id . '|min:4|max:16|regex:/^[a-zA-Z0-9_-]+$/',
             'guard_name' => 'required|string'
         ]);
 
-        $role->update([
-            'name' => $request->name,
-            'guard_name' => $request->guard_name,
-        ]);
+        // prevent change name or guard name 
+        if ($role->name != ROLE::RESERVED_ROLE_NAME['admin'] && $role->name != ROLE::RESERVED_ROLE_NAME['super-admin']) {
+            $role->update([
+                'name' => $request->name,
+                'guard_name' => $request->guard_name,
+            ]);
+        }
 
         $request->validate([
-            'permission' => 'required'
+            'permission' => 'array|exists:permissions,name',
         ]);
 
+        $selectedPermissions = $request->input('permission');
+        if ($selectedPermissions) {
+            $roleGuardName = $role->guard_name;
+            $permissions = Permission::whereIn('name', $selectedPermissions)->where('guard_name', $roleGuardName)->get();
+    
+            if ($permissions->count()!=count($selectedPermissions)) {
+                return redirect(route('admin.role.edit', [$role->id]))
+                    ->with('warning', 'You have to select the permission with the same guard name as the role. Contact support if the error persist.');
+            }    
+        }
         $role->syncPermissions($request->permission);
+
+        $this->clearCache();
 
         return redirect(route('admin.role.edit', [$role->id]))->with('status','Role Updated Successfully');
 
@@ -90,6 +107,7 @@ class RoleController extends BaseController
     {
         $role = Role::find($roleId);
         $role->deleteOrFail();
+        $this->clearCache();
         
         return redirect(route('admin.role.index'))->with('status','Role Deleted Successfully');
     }

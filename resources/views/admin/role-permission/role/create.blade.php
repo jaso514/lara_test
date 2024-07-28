@@ -16,7 +16,7 @@
         </div>
 
         <div class="mb-3">
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-primary">{{__('admin.Save')}}</button>
         </div>
     </form>
 </x-admin.create-base>

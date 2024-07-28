@@ -37,7 +37,7 @@ class UserController extends BaseController
     {
         $request->validate([
                 'username' => 'required|string|min:4|max:16|unique:users,username|regex:/^[a-zA-Z0-9_]+$/',
-                'name' => 'required|string|min:4|max:40',
+                'name' => 'required|string|min:4|max:40|regex:/^[a-zA-Z\ ]+$/',
                 'email' => 'required|email:rfc|max:255|unique:users,email',
                 'password' => 'required|string|min:8|max:32|regex:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*+?&])[A-Za-z\d@$!%*+?&]{8,}$/',
                 'role' => 'required'
@@ -70,7 +70,7 @@ class UserController extends BaseController
     {
         $rules = [
             'username' => 'required|string|min:4|max:16|unique:users,username,'.$user->id.'|regex:/^[a-zA-Z0-9_]+$/',
-            'name' => 'required|string|max:40',
+            'name' => 'required|string|min:4|max:40|regex:/^[a-zA-Z\ ]+$/',
             'email' => 'required|email:rfc|max:255|unique:users,email,'.$user->id,
             'roles' => 'required'
         ];
