@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Admin\BaseController;
+use App\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\DB;
 
@@ -28,7 +29,7 @@ class PermissionController extends BaseController
 
     public function create()
     {
-        $this->response['guards'] = config('auth.guards') ? array_keys(config('auth.guards')) : ['web'];
+        $this->response['guards'] = Role::getDefaultGuards();
         return view('admin.role-permission.permission.create', $this->response);
     }
 
@@ -43,6 +44,8 @@ class PermissionController extends BaseController
             'name' => $request->name,
             'guard_name' => $request->guard_name,
         ]);
+        
+        $this->clearCache();
 
         return redirect(route('admin.permission.edit', [$permission->id]))->with('status','Permission Created Successfully');
     }
@@ -50,7 +53,7 @@ class PermissionController extends BaseController
     public function edit(Permission $permission)
     {
         $this->response['permission'] = $permission;
-        $this->response['guards'] = config('auth.guards') ? array_keys(config('auth.guards')) : ['web'];
+        $this->response['guards'] = Role::getDefaultGuards();
         return view('admin.role-permission.permission.update', $this->response);
     }
 
@@ -66,6 +69,8 @@ class PermissionController extends BaseController
             'guard_name' => $request->guard_name,
         ]);
 
+        $this->clearCache();
+
         return redirect(route('admin.permission.edit', [$permission->id]))->with('status','Permission Updated Successfully');
     }
 
@@ -78,7 +83,6 @@ class PermissionController extends BaseController
                 return redirect(route('admin.permission.index'))->with('status','Permission Deleted Successfully');        
             }
         } catch (\Exception $e) {
-            dd($e);
             return redirect(route('admin.permission.index'))->with('status','Permission Couldn\'t be deleted Successfully');
         }
     }

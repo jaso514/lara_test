@@ -10,6 +10,7 @@
         <div class="mb-3">
             <label for="">Name</label>
             <input type="text" name="name" class="form-control" value="{{ old('name') }}"/>
+            <small>Without special characters. Without accents.</small>
         </div>
         <div class="mb-3">
             <label for="">Email</label>
