@@ -50,7 +50,9 @@ class UserController extends BaseController
                 'password' => Hash::make($request->password),
             ]);
 
-        $user->syncRoles($request->role);
+        $roleName = $request->roles[0]; // should be only one, is unique the role name
+        $role = Role::where('name', $roleName)->first();
+        $user->syncRoles($role);
 
         return redirect(route('admin.user.edit', [$user->id]))->with('status','User created successfully with roles');
     }
