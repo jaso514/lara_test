@@ -42,7 +42,7 @@ class UserController extends BaseController
                 'password' => 'required|string|min:8|max:32|regex:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*+?&])[A-Za-z\d@$!%*+?&]{8,}$/',
                 'role' => 'required'
             ]);
-
+        
         $user = User::create([
                 'username' => $request->username,
                 'name' => $request->name,
@@ -50,7 +50,7 @@ class UserController extends BaseController
                 'password' => Hash::make($request->password),
             ]);
 
-        $roleName = $request->roles[0]; // should be only one, is unique the role name
+        $roleName = $request->role; // should be only one, is unique the role name
         $role = Role::where('name', $roleName)->first();
         $user->syncRoles($role);
 
