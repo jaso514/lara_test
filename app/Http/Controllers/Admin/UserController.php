@@ -97,7 +97,7 @@ class UserController extends BaseController
 
         $roleName = $request->roles[0]; // should be only one, is unique the role name
         $role = Role::where('name', $roleName)->first();
-        $user->assignRole($role);
+        $user->syncRoles($role);
 
         return redirect(route('admin.user.edit', [$user->id]))->with('status','User Updated Successfully with roles');
     }
