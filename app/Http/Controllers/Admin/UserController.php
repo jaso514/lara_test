@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\User;
 use App\Http\Controllers\Admin\BaseController;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
+use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends BaseController
@@ -94,7 +94,10 @@ class UserController extends BaseController
         }
 
         $user->update($data);
-        $user->syncRoles($request->roles);
+
+        $roleName = $request->roles[0]; // should be only one, is unique the role name
+        $role = Role::where('name', $roleName)->first();
+        $user->assignRole($role);
 
         return redirect(route('admin.user.edit', [$user->id]))->with('status','User Updated Successfully with roles');
     }
