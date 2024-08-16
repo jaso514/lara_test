@@ -51,4 +51,8 @@ return [
         'verify' => true,
     ],
 
+    /**
+     * Password Rehashing
+     */
+    'rehash_on_login' => false,
 ];
