@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\User;
 use App\Http\Controllers\Admin\BaseController;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
+use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends BaseController
@@ -36,13 +36,13 @@ class UserController extends BaseController
     public function store(Request $request)
     {
         $request->validate([
-            'username' => 'required|string|min:4|max:16|unique:users,username|regex:/^[a-zA-Z0-9_]+$/',
-            'name' => 'required|string|max:40',
-            'email' => 'required|email|max:255|unique:users,email',
-            'password' => 'required|string|min:8|max:32|regex:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*+?&])[A-Za-z\d@$!%*+?&]{8,}$/',
-            'roles' => 'required'
-        ]);
-
+                'username' => 'required|string|min:4|max:16|unique:users,username|regex:/^[a-zA-Z0-9_]+$/',
+                'name' => 'required|string|min:4|max:40|regex:/^[a-zA-Z\ ]+$/',
+                'email' => 'required|email:rfc|max:255|unique:users,email|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
+                'password' => 'required|string|min:8|max:32|regex:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*+?&])[A-Za-z\d@$!%*+?&]{8,}$/',
+                'role' => 'required'
+            ]);
+        
         $user = User::create([
                 'username' => $request->username,
                 'name' => $request->name,
@@ -50,9 +50,11 @@ class UserController extends BaseController
                 'password' => Hash::make($request->password),
             ]);
 
-        $user->syncRoles($request->roles);
+        $roleName = $request->role; // should be only one, is unique the role name
+        $role = Role::where('name', $roleName)->first();
+        $user->syncRoles($role);
 
-        return redirect(route('admin.user.store'))->with('status','User created successfully with roles');
+        return redirect(route('admin.user.edit', [$user->id]))->with('status','User created successfully with roles');
     }
 
     public function edit(User $user)
@@ -70,8 +72,8 @@ class UserController extends BaseController
     {
         $rules = [
             'username' => 'required|string|min:4|max:16|unique:users,username,'.$user->id.'|regex:/^[a-zA-Z0-9_]+$/',
-            'name' => 'required|string|max:40',
-            'email' => 'required|email|max:255|unique:users,email,'.$user->id,
+            'name' => 'required|string|min:4|max:40|regex:/^[a-zA-Z\ ]+$/',
+            'email' => 'required|email:rfc|max:255|unique:users,email,'.$user->id,
             'roles' => 'required'
         ];
         
@@ -94,7 +96,10 @@ class UserController extends BaseController
         }
 
         $user->update($data);
-        $user->syncRoles($request->roles);
+
+        $roleName = $request->roles[0]; // should be only one, is unique the role name
+        $role = Role::where('name', $roleName)->first();
+        $user->syncRoles($role);
 
         return redirect(route('admin.user.edit', [$user->id]))->with('status','User Updated Successfully with roles');
     }

@@ -15,6 +15,10 @@
                     <div class="alert alert-success">{{ session('status') }}</div>
                 @endif
 
+                @if (session('warning'))
+                    <div class="alert alert-warning">{{ session('warning') }}</div>
+                @endif
+
                 <div class="card">
                     <x-admin.index-header :entity="$entity" :action="'update'" :buttons="['index']"/>
                     <div class="card-body">

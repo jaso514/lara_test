@@ -7,8 +7,12 @@
             <input type="text" name="name" class="form-control" value="{{ old('name') }}"/>
         </div>
         <div class="mb-3">
-            <label for="">Guard name</label>
-            <input type="text" name="guard_name" class="form-control" value="{{ old('guard_name') }}"/>
+            <x-adminlte-select2 name="guard_name" label="Guard name" required>
+                <option value="">Select one option...</option>
+                @foreach ($guards as $guard)
+                <option value="{{ $guard }}">{{ $guard }}</option>
+                @endforeach
+            </x-adminlte-select2>
         </div>
         <div class="mb-3">
             <button type="submit" class="btn btn-primary">Save</button>

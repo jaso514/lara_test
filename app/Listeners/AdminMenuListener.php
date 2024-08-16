@@ -24,11 +24,6 @@ class AdminMenuListener
     public function handle(BuildingMenu $event): void
     {
         $event->menu->add([
-            'header' => 'authorization_config',
-            'can' => ['user view', 'role view', 'permission view']
-        ]);
-
-        $event->menu->add([
             'key' => 'authorization',
             'text' => 'Authorization',
             'icon' => '',
@@ -40,6 +35,8 @@ class AdminMenuListener
             'text' => 'Users',
             'url' => route('admin.user.index'),
             'icon' => 'fas fa-fw fa-user',
+            'can' => ['user view'],
+            'active' => ['back_admin/user/*'],
         ]);
 
         $event->menu->addIn('authorization', [
@@ -47,6 +44,8 @@ class AdminMenuListener
             'text' => 'Roles',
             'url' => route('admin.role.index'),
             'icon' => 'fas fa-fw fa-key',
+            'can' => ['role view'],
+            'active' => ['back_admin/role/*'],
         ]);
 
         $event->menu->addIn('authorization', [
@@ -54,6 +53,8 @@ class AdminMenuListener
             'text' => 'Permissions',
             'url' => route('admin.permission.index'),
             'icon' => 'fas fa-fw fa-eye',
+            'can' => ['permission view'],
+            'active' => ['back_admin/permission/*'],
         ]);
 
         $event->menu->add([

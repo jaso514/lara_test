@@ -19,7 +19,7 @@
         </div>
         <div class="mb-3">
             <label for="">Password</label>
-            <input type="text" name="password" class="form-control" />
+            <input type="password" name="password" class="form-control" />
             @error('password') <span class="text-danger">{{ $message }}</span> @enderror
         </div>
         <div class="mb-3">
@@ -37,6 +37,16 @@
             </select>
             @error('roles') <span class="text-danger">{{ $message }}</span> @enderror
         </div>
+
+        <div class="mb-3">
+            <label for="">Created At</label>
+            <input type="text" readonly value="{{ $user->created_at }}" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label for="">Last Update</label>
+            <input type="text" readonly value="{{ $user->updated_at }}" class="form-control" />
+        </div>
+        
         <div class="mb-3">
             <button type="submit" class="btn btn-primary">Update</button>
         </div>

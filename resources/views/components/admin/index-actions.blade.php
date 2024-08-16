@@ -7,7 +7,8 @@
 @endcan
 
 @can("$entity delete")
-    <button type="button" class="btn btn-xs btn-warning mx-1 shadow confirm-delete-btn"
+    <button type="button" class="btn btn-xs btn-danger mx-1 shadow confirm-delete-btn"
+            
             data-entity="{{ $entity }}"
             data-object-id="{{ $objectId }}"
             data-toggle="modal" data-target="#deleteConfirmationModal"

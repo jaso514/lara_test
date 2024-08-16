@@ -3,7 +3,6 @@
 return [
 
     'main_navigation' => 'MAIN NAVIGATION',
-    'authorization_config' => 'Auth & Configs',
     'blog' => 'Blog',
     'pages' => 'Pages',
     'account_settings' => 'ACCOUNT SETTINGS',

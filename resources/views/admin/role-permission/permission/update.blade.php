@@ -8,8 +8,12 @@
             <input type="text" name="name" value="{{ $permission->name }}" class="form-control" />
         </div>
         <div class="mb-3">
-            <label for="">Guard Name</label>
-            <input type="text" name="guard_name" value="{{ $permission->guard_name }}" class="form-control" />
+            <x-adminlte-select2 name="guard_name" label="Guard name" required>
+                <option value="">Select one option...</option>
+                @foreach ($guards as $guard)
+                <option value="{{ $guard }}" {{ $guard==$permission->guard_name?'selected':'' }} >{{ $guard }}</option>
+                @endforeach
+            </x-adminlte-select2>
         </div>
         <div class="mb-3">
             <button type="submit" class="btn btn-primary">Update</button>
